@@ -1,0 +1,21 @@
+name: Update Backup Databricks Repo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Update Databricks Repo
+        run: |
+          curl --request PATCH \
+            "${{ secrets.DATABRICKS_HOST }}/api/2.0/repos/${{ secrets.TARGET_REPO_ID }}" \
+            --header "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
+            --header "Content-Type: application/json" \
+            --data '{
+              "branch": "main"
+            }'
